@@ -1,9 +1,6 @@
 package ru.shemich.auth.rest;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import ru.shemich.auth.model.App;
 
 import java.util.Date;
@@ -31,5 +28,16 @@ public class AppRestControllerV1 {
         return APPLICATIONS.stream().filter(app -> app.getId().equals(id))
                 .findFirst()
                 .orElse(null);
+    }
+
+    @PostMapping
+    public App create(@RequestBody App app) {
+        this.APPLICATIONS.add(app);
+        return app;
+    }
+
+    @DeleteMapping("/{id}")
+    public void deleteById(@PathVariable Long id) {
+        this.APPLICATIONS.removeIf(app -> app.getId().equals(id));
     }
 }
