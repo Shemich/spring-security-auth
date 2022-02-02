@@ -1,5 +1,6 @@
 package ru.shemich.auth.rest;
 
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import ru.shemich.auth.model.App;
 
@@ -24,6 +25,7 @@ public class AppRestControllerV1 {
     }
 
     @GetMapping("/{id}")
+    @PreAuthorize("hasAuthority('app:read')")
     public App getById(@PathVariable Long id) {
         return APPLICATIONS.stream().filter(app -> app.getId().equals(id))
                 .findFirst()
@@ -31,12 +33,14 @@ public class AppRestControllerV1 {
     }
 
     @PostMapping
+    @PreAuthorize("hasAuthority('app:write')")
     public App create(@RequestBody App app) {
         this.APPLICATIONS.add(app);
         return app;
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasAuthority('app:write')")
     public void deleteById(@PathVariable Long id) {
         this.APPLICATIONS.removeIf(app -> app.getId().equals(id));
     }
